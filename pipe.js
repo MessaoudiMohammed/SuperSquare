@@ -9,7 +9,7 @@ class Pipe {
         size: 35,
         neck: 5
     }
-    isContainsArc = true;
+    // isContainsArc = false;
     isContainsArc = Math.random() > 0.5 ? true : false;
     background = [0, 255, 0];
     constructor() {

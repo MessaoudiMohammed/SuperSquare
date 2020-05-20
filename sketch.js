@@ -3,6 +3,7 @@ let char = null;
 function setup() {
     createCanvas(canvas.width, canvas.height);
     char = new Square();
+    oldX = char.x;
 }
 land = new Land(canvas.width + 50);
 pipes = [new Pipe(50), new Pipe()];

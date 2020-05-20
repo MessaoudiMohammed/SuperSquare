@@ -64,8 +64,8 @@ class Square {
         });
 
         if (this.y + this.height >= closestPipe.y - closestPipe.h1
-            && this.x + (this.width * 75 / 100) >= closestPipe.x - (closestPipe.w1 - closestPipe.w2) / 2
-            && this.x + (this.width * 25 / 100) <= closestPipe.x - (closestPipe.w1 - closestPipe.w2) / 2 + closestPipe.w1
+            && this.x + (this.width * 70 / 100) >= closestPipe.x - (closestPipe.w1 - closestPipe.w2) / 2
+            && this.x + (this.width * 30 / 100) <= closestPipe.x - (closestPipe.w1 - closestPipe.w2) / 2 + closestPipe.w1
         ) {
             this.y = closestPipe.y - closestPipe.h1 - this.height;
         }
@@ -95,6 +95,7 @@ class Square {
         }
         switch (direction) {
             case RIGHT:
+                oldX = char.x;
                 this.x += 5;
                 break;
             case LEFT:
@@ -114,7 +115,8 @@ class Square {
                 this.height = this.width;
                 break;
         }
-        if (this.x > canvas.width / 4) {
+        if (this.x > canvas.width / 4 && oldX !== char.x) {
+
             land.move(direction);
             pipes.forEach(pipe => {
                 pipe.move(direction);
@@ -123,3 +125,4 @@ class Square {
     }
 
 }
+let oldX = null;
