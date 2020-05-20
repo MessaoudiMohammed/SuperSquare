@@ -5,9 +5,13 @@ function setup() {
     char = new Square();
 }
 land = new Land(canvas.width + 50);
+pipes = [new Pipe(50), new Pipe()];
 function draw() {
     background("#7ce1ff");
     land.show();
+    pipes.forEach(pipe => {
+        pipe.show();
+    });
     if (char.alive) {
         move();
         char.update();
@@ -27,7 +31,7 @@ function move() {
     }
 }
 function keyPressed() {
-    if (key === "w")
+    if (key === "w" || key === " ")
         char.move(UP);
 }
 function keyReleased() {

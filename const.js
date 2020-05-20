@@ -7,3 +7,4 @@ const UP = -2;
 const NORMAL = 0;
 const DOWN = 2;
 const LEFT = -1;
+

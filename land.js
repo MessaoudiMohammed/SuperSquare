@@ -18,7 +18,7 @@ class Land {
     }
     move(direction) {
         if (direction === RIGHT) {
-            this.x -= 5;
+            this.x -= 2;
         }
     }
 }
