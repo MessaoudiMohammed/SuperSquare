@@ -2,14 +2,19 @@ class Land {
     height = 25;
     width = 0;
     y = canvas.height - this.height;
-    x = -10;
+    x = -5;
+    isnewLandAdded = false;
     constructor(width) {
         if (width) {
             this.width = width;
         } else {
-            while (this.width < canvas / 2) {
+            while (this.width < canvas.width / 2) {
                 this.width = Math.random() * canvas.width;
             }
+            this.x = canvas.width;
+        }
+        for (let i = 0; i < Math.random() * 5; i++) {
+            pipes.push(new Pipe(this));
         }
     }
     show() {
@@ -19,6 +24,11 @@ class Land {
     move(direction) {
         if (direction === RIGHT) {
             this.x -= 2;
+        }
+        // console.log(canvas.width - this.x - this.width);
+        if (canvas.width - this.x - this.width >= 150 && this.isnewLandAdded === false) {
+            this.isnewLandAdded = true;
+            lands.push(new Land());
         }
     }
 }

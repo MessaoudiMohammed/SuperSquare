@@ -1,15 +1,18 @@
 // let p = new Perceptron();
 let char = null;
+let pipes = [];
+pipes = [];
+let lands = [new Land(canvas.width)];
 function setup() {
     createCanvas(canvas.width, canvas.height);
     char = new Square();
-    oldX = char.x;
 }
-land = new Land(canvas.width + 50);
-pipes = [new Pipe(50), new Pipe()];
+
 function draw() {
     background("#7ce1ff");
-    land.show();
+    lands.forEach(land => {
+        land.show();
+    });
     pipes.forEach(pipe => {
         pipe.show();
     });
@@ -39,4 +42,8 @@ function keyReleased() {
     if (key === "s") {
         char.move(NORMAL)
     }
+}
+
+function mouseClicked(s) {
+    console.log(s);
 }

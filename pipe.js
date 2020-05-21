@@ -2,9 +2,9 @@ class Pipe {
     h1 = 20;
     w1 = 50;
     w2 = 40;
-    h2 = Math.random() * canvas.height / 2;
+    h2 = 0;
     x = Math.random() * canvas.width;
-    y = canvas.height - land.height - 20;
+    y = 0;
     arc = {
         size: 35,
         neck: 5
@@ -12,9 +12,18 @@ class Pipe {
     // isContainsArc = false;
     isContainsArc = Math.random() > 0.5 ? true : false;
     background = [0, 255, 0];
-    constructor() {
+    constructor(land) {
+        this.parentLand = land;
+        this.y=canvas.height - this.parentLand.height - 20
         while (this.h2 < canvas.height / 2) {
             this.h2 = Math.random() * canvas.height;
+        }
+        if (pipes.length === 0)
+            while (this.x < canvas.width / 3) {
+                this.x = Math.random() * canvas.width;
+            }
+        else {
+            this.x += pipes[pipes.length - 1].x + Math.random() * canvas.width;
         }
     }
     show() {

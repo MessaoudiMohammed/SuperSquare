@@ -21,12 +21,19 @@ class Square {
         }
         this.landTouched();
         this.pipeTouched();
+        lands.forEach(_land => {
+            _land.move(RIGHT);
+        })
+        pipes.forEach(pipe => {
+            pipe.move(RIGHT);
+        });
     }
     landTouched() {
         if (this.alive) {
-            if (land.x <= this.x && land.x + land.width >= this.x) {
-                if (this.y > land.y - this.height) {
-                    this.y = land.y - this.height;
+            let closestLand = this.getClosetsLand();
+            if (closestLand.x <= this.x && closestLand.x + closestLand.width >= this.x) {
+                if (this.y > closestLand.y - this.height) {
+                    this.y = closestLand.y - this.height;
                     this.gravity = 0
                 }
             }
@@ -37,37 +44,20 @@ class Square {
         if (this.x + this.width >= canvas.width) {
             this.x = canvas.width - this.width;
         }
-        if (this.x <= 0) {
+        if (this.x < 0) {
             this.x = 0;
         }
     }
     pipeTouched() {
-        let closestPipe = pipes[0];
-        pipes.map((pipe, index) => {
-            if (index > 0) {
-                let x, y;
-                if (closestPipe.x < 0) {
-                    x = closestPipe.x * -1;
-                } else {
-                    x = closestPipe.x;
-                }
-                if (pipe.x < 0) {
-                    y = pipe.x * -1;
-                } else {
-                    y = pipe.x;
-                }
-
-                if (Math.abs(x - this.x) > Math.abs(y - this.x)) {
-                    closestPipe = pipe;
-                }
-            }
-        });
-
-        if (this.y + this.height >= closestPipe.y - closestPipe.h1
+        let closestPipe = this.getClosetsPipe();
+        if (this.y + this.height > closestPipe.y - closestPipe.h1
             && this.x + (this.width * 70 / 100) >= closestPipe.x - (closestPipe.w1 - closestPipe.w2) / 2
             && this.x + (this.width * 30 / 100) <= closestPipe.x - (closestPipe.w1 - closestPipe.w2) / 2 + closestPipe.w1
         ) {
             this.y = closestPipe.y - closestPipe.h1 - this.height;
+            this.gravity = 0;
+        } else {
+
         }
         if (closestPipe.x - (closestPipe.w1 - closestPipe.w2) / 2 < this.x + this.width
             && closestPipe.x + closestPipe.w1 > this.x + this.width
@@ -90,19 +80,19 @@ class Square {
         }
     }
     move(direction) {
+        let land = this.getClosetsLand();
         if (this.x <= 0) {
             this.x = 0;
         }
         switch (direction) {
             case RIGHT:
-                oldX = char.x;
                 this.x += 5;
                 break;
             case LEFT:
                 this.x -= 5;
                 break;
             case UP:
-                if (this.y === land.y - this.height) {
+                if (this.y === land.y - this.height || this.y + this.height >= this.getClosetsPipe().y - this.getClosetsPipe().h1) {
                     this.y -= this.gravity;
                     this.gravity = -13;
                 }
@@ -115,14 +105,42 @@ class Square {
                 this.height = this.width;
                 break;
         }
-        if (this.x > canvas.width / 4 && oldX !== char.x) {
-
-            land.move(direction);
-            pipes.forEach(pipe => {
-                pipe.move(direction);
-            });
-        }
     }
+    getClosetsPipe() {
+        let closestPipe = pipes[0];
+        pipes.map((pipe, index) => {
+            if (index > 0) {
+                let x, y;
+                if (closestPipe.x < 0) {
+                    x = closestPipe.x * -1;
+                } else {
+                    x = closestPipe.x;
+                }
+                if (pipe.x < 0) {
+                    y = pipe.x * -1;
+                } else {
+                    y = pipe.x;
+                }
 
+                if (Math.abs(x - this.x) > Math.abs(y - this.x)) {
+                    closestPipe = pipe;
+                }
+            }
+        });
+        return closestPipe;
+    }
+    getClosetsLand() {
+        let closetsLand = lands[0];
+        lands.map((land, index) => {
+            if (index > 0) {
+                if (
+                    this.x + (this.width * 70 / 100) >= land.x
+                    && this.x + (this.width * 30 / 100) <= land.x + land.width
+                ) {
+                    closetsLand = land;
+                }
+            }
+        });
+        return closetsLand;
+    }
 }
-let oldX = null;
